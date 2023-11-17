@@ -1,0 +1,24 @@
+type Extra {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateExtraInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateExtraInput {
+  id: Int!
+}
+
+type Query {
+  extras: [Extra]!
+  extra(id: Int!): Extra
+}
+
+type Mutation {
+  createExtra(createExtraInput: CreateExtraInput!): Extra!
+  updateExtra(updateExtraInput: UpdateExtraInput!): Extra!
+  removeExtra(id: Int!): Extra
+}
