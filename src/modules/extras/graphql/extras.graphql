@@ -1,0 +1,40 @@
+type Query {
+  extras(filter: FilteExtraInput): [Extra]!
+  extra(id: ID!): Extra
+}
+
+type Mutation {
+  createExtra(data: CreateExtraInput!): Extra!
+  updateExtra(id: ID!, data: UpdateExtraInput!): Extra!
+  removeExtra(id: ID!): Boolean
+}
+
+enum EXTRA_TYPE {
+  ADDITIONAL
+  PROMOTION
+}
+
+type Extra {
+  _id: ID!
+  title: String
+  description: String
+  type: EXTRA_TYPE
+  createdAt: Date
+  updatedAt: Date
+}
+
+input CreateExtraInput {
+  title: String!
+  description: String!
+  type: EXTRA_TYPE
+}
+
+input UpdateExtraInput {
+  title: String
+  description: String
+  type: EXTRA_TYPE
+}
+
+input FilteExtraInput {
+  type: EXTRA_TYPE
+}
