@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import GraphqlConfig from './config/graphql/config.graphq';
 import { ScalarsModule } from './modules/scalars/scalars.module';
+import { FaqModule } from './modules/faq/faq.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ScalarsModule } from './modules/scalars/scalars.module';
     MongooseModule.forRoot(process.env.MONGODB_URI),
     ScalarsModule,
     ExtrasModule,
+    FaqModule,
   ],
 })
 export class AppModule {}

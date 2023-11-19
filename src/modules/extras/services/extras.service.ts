@@ -35,7 +35,6 @@ export class ExtrasService {
 
   async update(id: string, updateExtraInput: UpdateExtraInput) {
     const extraFound = await this.findOne(id);
-    console.log(updateExtraInput)
     await extraFound.updateOne({
       ...updateExtraInput,
     });

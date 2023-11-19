@@ -1,0 +1,26 @@
+type Query {
+  faqs: [Faq]!
+  faq(id: ID!): Faq
+}
+
+type Mutation {
+  createFaq(data: CreateFaqInput!): Faq!
+  updateFaq(id: ID!, data: UpdateFaqInput!): Faq!
+  removeFaq(id: ID!): Faq
+}
+
+type Faq {
+  _id: ID!
+  question: String!
+  answer: String!
+}
+
+input CreateFaqInput {
+  question: String!
+  answer: String!
+}
+
+input UpdateFaqInput {
+  question: String
+  answer: String
+}
