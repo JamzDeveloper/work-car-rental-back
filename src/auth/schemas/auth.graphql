@@ -1,0 +1,42 @@
+type Query {
+  authLogin(
+    email: String!
+    password: String!
+  ): User
+  authLoginAdmin(email: String!, password: String!): User
+  dataWithToken: User
+  refreshToken(refresh: String!): ResponseTokens
+  #sendCodeSms(code: String!, number: String!): String
+  #verifyCodeSms(code: String!, phone: CreatePhoneInput!): Boolean
+  #verifyCodeSmsLogin(
+  #  code: String!
+  #  phone: CreatePhoneInput!
+  #  location: LonLatLoginInput!
+  #  platform: String
+  #): ResponseUser
+  #validateCode(code: String!): UserSimple
+  #googleAuth(
+  #  id_token: String
+  #  firstName: String
+  #  lastName: String
+  #  location: LonLatLoginInput!
+  #): AuthData!
+  #facebookAuth(id_token: String, location: LonLatLoginInput!): AuthData!
+}
+
+#type Mutation {
+#  requestRecoverPassword(email: String!): UserSimple
+#  resetPassword(code: String!, newPassword: String!): ResponseUser
+#  changePassword(password: String!, newPassword: String!): ResponseUser
+#}
+
+type ResponseTokens {
+  accessToken: String
+  refreshToken: String
+}
+
+type AuthData {
+  user: UserSimple
+  accessToken: String
+  refreshToken: String
+}

@@ -1,0 +1,43 @@
+type Query {
+  users: [User]!
+  user(id: ID!): User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): AuthData!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  #removeUser(id: ID!): User
+}
+
+enum RoleUser {
+  USER
+  ADMIN
+}
+
+type User {
+  _id: ID!
+  fullName: String
+  username: String!
+  email: Email
+  role: RoleUser
+  photo: String
+}
+
+type UserSimple {
+  _id: ID!
+  fullName: String
+  username: String!
+  email: Email
+  photo: String
+}
+
+input CreateUserInput {
+  fullName: String
+  email: Email
+  password: String
+}
+
+input UpdateUserInput {
+  fullName: String
+  photo: String
+}

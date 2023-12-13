@@ -7,14 +7,19 @@ import { MongooseModule } from '@nestjs/mongoose';
 import GraphqlConfig from './config/graphql/config.graphq';
 import { ScalarsModule } from './modules/scalars/scalars.module';
 import { FaqModule } from './modules/faq/faq.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>(GraphqlConfig),
     MongooseModule.forRoot(process.env.MONGODB_URI),
+    AuthModule,
     ScalarsModule,
     ExtrasModule,
+    UsersModule,
+
     FaqModule,
   ],
 })
