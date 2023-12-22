@@ -2,8 +2,8 @@ type Query {
   authLogin(
     email: String!
     password: String!
-  ): User
-  authLoginAdmin(email: String!, password: String!): User
+  ): AuthData
+  authLoginAdmin(email: String!, password: String!): AuthData
   dataWithToken: User
   refreshToken(refresh: String!): ResponseTokens
   #sendCodeSms(code: String!, number: String!): String

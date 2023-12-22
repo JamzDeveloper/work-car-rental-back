@@ -22,11 +22,10 @@ import { UsersService } from '../../modules/users/services/users.service';
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-  ) // private smstpService: SmtpService,
-  {}
+    @InjectModel(User.name) private userModel: Model<UserDocument>, // private smstpService: SmtpService,
+  ) {}
   async authLogin(email: string, password: string) {
-    const foundUser = await this.userModel.findOne({ email, deleted: false });
+    const foundUser = await this.userModel.findOne({ email });
 
     if (!foundUser) throw new UnauthorizedException();
 
@@ -47,7 +46,7 @@ export class AuthService {
     // return await this.userService.dataUser(user);
   }
   async authLoginAdmin(email: string, password: string, platform: string) {
-    const foundUser = await this.userModel.findOne({ email, deleted: false });
+    const foundUser = await this.userModel.findOne({ email });
 
     if (!foundUser) throw new UnauthorizedException();
 
