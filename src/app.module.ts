@@ -9,6 +9,7 @@ import { ScalarsModule } from './modules/scalars/scalars.module';
 import { FaqModule } from './modules/faq/faq.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { CarsModule } from './modules/cars/cars.module';
 
 @Module({
   imports: [
@@ -21,6 +22,8 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
 
     FaqModule,
+
+    CarsModule,
   ],
 })
 export class AppModule {}

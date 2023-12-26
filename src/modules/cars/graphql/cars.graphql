@@ -1,0 +1,51 @@
+type Query {
+  cars: [Car]!
+  car(id: ID!): Car
+}
+
+type Mutation {
+  createCar(createCarInput: CreateCarInput!): Car!
+  updateCar(updateCarInput: UpdateCarInput!): Car!
+  removeCar(id: ID!): Car
+}
+
+type Car {
+  _id: ID!
+  name: String
+  image: String
+  countPerson: Int
+  typeChange: String
+  minTankQuantity: Float
+  maxTankQuantity: Float
+  fullType: String
+  subTitle: String
+  description: String
+  precio: Float
+  createdAt: Date
+  updatedAt: Date
+}
+
+input CreateCarInput {
+  name: String!
+  countPerson: Int
+  typeChange: String!
+  minTankQuantity: Float!
+  maxTankQuantity: Float!
+  fullType: String!
+  subTitle: String!
+  description: String!
+  precio: Float!
+}
+
+input UpdateCarInput {
+  name: String
+  image: String
+  countPerson: Int
+  typeChange: String
+  minTankQuantity: Float
+  maxTankQuantity: Float
+  fullType: String
+  subTitle: String
+  description: String
+  precio: Float
+}
