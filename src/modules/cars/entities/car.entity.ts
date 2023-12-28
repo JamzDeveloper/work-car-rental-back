@@ -17,6 +17,15 @@ export class Car {
   @Prop({ type: String })
   typeChange: string;
 
+  @Prop({ type: String, lowercase: true })
+  brand: string;
+
+  @Prop({ type: String, lowercase: true })
+  model: string;
+
+  @Prop({ type: String })
+  pickupTime: string;
+
   @Prop({ type: Number })
   minTankQuantity: number;
 
@@ -32,8 +41,14 @@ export class Car {
   @Prop({ type: String })
   description: string;
 
-  @Prop({ type: Number })
-  precio: number;
+  @Prop({ type: Number, default: 0 })
+  price: number;
+
+  @Prop({ type: Boolean, default: false })
+  availability: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  published: boolean;
 
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;

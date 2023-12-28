@@ -20,9 +20,14 @@ type Car {
   fullType: String
   subTitle: String
   description: String
-  precio: Float
+  price: Float
   createdAt: Date
   updatedAt: Date
+  availability: Boolean
+  published: Boolean
+  brand: String
+  model: String
+  pickupTime: String
 }
 
 input CreateCarInput {
@@ -34,7 +39,12 @@ input CreateCarInput {
   fullType: String!
   subTitle: String!
   description: String!
-  precio: Float!
+  price: Float!
+  availability: Boolean
+  published: Boolean
+  brand: String!
+  model: String!
+  pickupTime: String
 }
 
 input UpdateCarInput {
@@ -47,5 +57,10 @@ input UpdateCarInput {
   fullType: String
   subTitle: String
   description: String
-  precio: Float
+  price: Float
+  availability: Boolean
+  published: Boolean
+  brand: String
+  model: String
+  pickupTime: String
 }

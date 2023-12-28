@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateCarInput {
   @IsString()
@@ -26,5 +26,21 @@ export class CreateCarInput {
   description: string;
 
   @IsNumber()
-  precio: number;
+  price: number;
+
+
+  @IsBoolean()
+  availability: boolean
+  
+  @IsBoolean()
+  published: boolean
+  
+  @IsString()
+  brand: string
+
+  @IsString()
+  model: string
+
+  @IsString()
+  pickupTime: string
 }
