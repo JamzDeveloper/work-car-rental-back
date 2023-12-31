@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCarInput {
   @IsString()
@@ -43,4 +43,8 @@ export class CreateCarInput {
 
   @IsString()
   pickupTime: string
+
+  @IsString()
+  @IsOptional()
+  image:string
 }

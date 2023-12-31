@@ -4,12 +4,28 @@ import { UpdateCarInput } from '../dto/update-car.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { Car, CarDocument } from '../entities/car.entity';
 import { Model, Types } from 'mongoose';
+import { FileUpload } from 'src/modules/scalars/types/file.type';
+import { S3Service } from '../../../services/s3/services/s3.service';
 
 @Injectable()
 export class CarsService {
-  constructor(@InjectModel(Car.name) private carModel: Model<CarDocument>) {}
+  constructor(
+    @InjectModel(Car.name) private carModel: Model<CarDocument>,
+    private readonly s3Service: S3Service,
+  ) {}
 
-  async create(createCarInput: CreateCarInput) {
+  async create(
+    createCarInput: CreateCarInput,
+    file: Promise<FileUpload> | Promise<null>,
+  ) {
+    const newPhoto: FileUpload | null = await file;
+    let image: string | null = null;
+
+    console.log("car service 24",newPhoto)
+    if (newPhoto && newPhoto != undefined) {
+      image = await this.s3Service.uploadFile('cars/', newPhoto);
+      createCarInput.image = image;
+    }
     const newCar = await this.carModel.create(createCarInput);
 
     await newCar.save();

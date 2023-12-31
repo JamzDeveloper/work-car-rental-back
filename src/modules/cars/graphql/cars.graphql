@@ -4,7 +4,7 @@ type Query {
 }
 
 type Mutation {
-  createCar(createCarInput: CreateCarInput!): Car!
+  createCar(createCarInput: CreateCarInput!,file: Upload): Car!
   updateCar(updateCarInput: UpdateCarInput!): Car!
   removeCar(id: ID!): Car
 }

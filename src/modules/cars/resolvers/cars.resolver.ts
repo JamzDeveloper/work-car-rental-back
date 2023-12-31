@@ -2,14 +2,24 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CarsService } from '../services/cars.service';
 import { CreateCarInput } from '../dto/create-car.input';
 import { UpdateCarInput } from '../dto/update-car.input';
-
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 @Resolver('Car')
 export class CarsResolver {
   constructor(private readonly carsService: CarsService) {}
 
   @Mutation('createCar')
-  create(@Args('createCarInput') createCarInput: CreateCarInput) {
-    return this.carsService.create(createCarInput);
+  async create(
+    @Args('createCarInput') createCarInput: CreateCarInput,
+    @Args({ name: 'file', type: () => GraphQLUpload })
+    fileUpload: GraphQLUpload,
+  ) {
+    console.log("car.resolve 16",fileUpload)
+    if (!fileUpload) {
+      return this.carsService.create(createCarInput, null);
+    }
+    const { file } = await fileUpload;
+
+    return this.carsService.create(createCarInput, file);
   }
 
   @Query('cars')

@@ -9,7 +9,7 @@ export class Car {
   name: string;
 
   @Prop({ type: String })
-  image?: string;
+  image: string;
 
   @Prop({ type: Number })
   countPerson: number;
