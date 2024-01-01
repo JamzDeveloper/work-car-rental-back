@@ -1,9 +1,7 @@
-import { Endpoint } from 'aws-sdk';
 import {
   DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
-  S3,
   S3Client,
 } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
@@ -16,24 +14,10 @@ export class S3Service {
   private readonly bucketName: string;
 
   constructor() {
-    const { S3_SPACE_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY, S3_REGION } =
-      process.env;
-    // this.s3 = new S3Client({
-    //   // The transformation for endpoint is not implemented.
-    //   // Refer to UPGRADING.md on aws-sdk-js-v3 for changes needed.
-    //   // Please create/upvote feature request on aws-sdk-js-codemod for endpoint.
-    //   endpoint: spacesEndpoint,
+    const { S3_ACCESS_KEY, S3_SECRET_KEY, S3_REGION } = process.env;
 
-    //   credentials: {
-    //     accessKeyId: S3_ACCESS_KEY,
-    //     secretAccessKey: S3_SECRET_KEY,
-    //   },
-
-    //   region: S3_REGION,
-    // });
     this.s3 = new S3Client({
       region: S3_REGION,
-      endpoint: S3_SPACE_ENDPOINT,
       credentials: {
         accessKeyId: S3_ACCESS_KEY,
         secretAccessKey: S3_SECRET_KEY,
@@ -46,7 +30,7 @@ export class S3Service {
   async uploadFile(
     direction: string,
     file: FileUpload,
-  ): Promise<string | null> {
+  ): Promise<ResponseUploadFile | null> {
     try {
       if (file == undefined || file == null) {
         return null;
@@ -68,11 +52,10 @@ export class S3Service {
       if (filetypes.test(mimetype.toString())) {
         const name =
           `${direction}` + Date.now() + '-' + filename.replace(/ /g, '_');
-        console.log('s3 service -71', fileBuffer);
         await this.uploadFileS3(name, fileBuffer);
-        const url = this.getUrl(name);
+        const url = await this.getUrl(name);
 
-        return url;
+        return { url, key: name };
       } else {
         return null;
       }
@@ -83,13 +66,11 @@ export class S3Service {
 
   async uploadFileS3(key: string, file: Buffer) {
     const command = new PutObjectCommand({
-      Bucket: process.env.DO_SPACE_NAME,
+      Bucket: this.bucketName,
       Key: key,
       Body: file,
     });
-    console.log('s3 service-91', command);
     const response = await this.s3.send(command);
-    console.log('s3 service-93', response);
 
     return response;
   }
@@ -98,11 +79,8 @@ export class S3Service {
     if (!key) {
       return null;
     }
-    const expires = 24 * 60 * 60;
     const command = new GetObjectCommand({ Bucket: this.bucketName, Key: key });
-    console.log('s3 service 104', command);
-    const url = await getSignedUrl(this.s3, command, { expiresIn: expires }); // expires in seconds
-console.log("s3 service 105",url)
+    const url = await getSignedUrl(this.s3, command); // expires in seconds
     return url;
   }
 
@@ -118,4 +96,8 @@ console.log("s3 service 105",url)
     const response = await this.s3.send(command);
     return response;
   }
+}
+interface ResponseUploadFile {
+  key: string;
+  url: string;
 }

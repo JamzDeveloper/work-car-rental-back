@@ -47,4 +47,8 @@ export class CreateCarInput {
   @IsString()
   @IsOptional()
   image:string
+
+  @IsString()
+  @IsOptional()
+  imageAws:string
 }

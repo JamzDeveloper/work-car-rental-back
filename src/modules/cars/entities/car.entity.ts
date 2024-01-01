@@ -10,6 +10,9 @@ export class Car {
 
   @Prop({ type: String })
   image: string;
+  
+  @Prop({ type: String })
+  imageAws: string;
 
   @Prop({ type: Number })
   countPerson: number;

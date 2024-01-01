@@ -38,7 +38,7 @@ export class CarsResolver {
   }
 
   @Mutation('removeCar')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.carsService.remove(id);
   }
 }

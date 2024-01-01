@@ -19,12 +19,15 @@ export class CarsService {
     file: Promise<FileUpload> | Promise<null>,
   ) {
     const newPhoto: FileUpload | null = await file;
-    let image: string | null = null;
 
-    console.log("car service 24",newPhoto)
+    console.log('car service 24', newPhoto);
     if (newPhoto && newPhoto != undefined) {
-      image = await this.s3Service.uploadFile('cars/', newPhoto);
-      createCarInput.image = image;
+      const { url: image, key } = await this.s3Service.uploadFile(
+        'cars/',
+        newPhoto,
+      );
+      createCarInput.image = image ?? null;
+      createCarInput.imageAws = key ?? null;
     }
     const newCar = await this.carModel.create(createCarInput);
 
@@ -50,7 +53,10 @@ export class CarsService {
     return `This action updates a #${id} car`;
   }
 
-  remove(id: number) {
+  async remove(id: string) {
+    console.log(id);
+
+    await this.s3Service.deleteFile(id);
     return `This action removes a #${id} car`;
   }
 }
