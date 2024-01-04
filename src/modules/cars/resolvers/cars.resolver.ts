@@ -13,7 +13,6 @@ export class CarsResolver {
     @Args({ name: 'file', type: () => GraphQLUpload })
     fileUpload: GraphQLUpload,
   ) {
-    console.log("car.resolve 16",fileUpload)
     if (!fileUpload) {
       return this.carsService.create(createCarInput, null);
     }
@@ -41,4 +40,14 @@ export class CarsResolver {
   remove(@Args('id') id: string) {
     return this.carsService.remove(id);
   }
+
+  // @Mutation('test')
+  // async test(
+  //   @Args({ name: 'file', type: () => GraphQLUpload })
+  //   fileUpload: GraphQLUpload,
+  // ) {
+  //   console.log('car.resolve 53', fileUpload);
+
+  //   return true;
+  // }
 }

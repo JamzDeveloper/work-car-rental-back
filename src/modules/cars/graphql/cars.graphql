@@ -6,7 +6,8 @@ type Query {
 type Mutation {
   createCar(createCarInput: CreateCarInput!,file: Upload): Car!
   updateCar(updateCarInput: UpdateCarInput!): Car!
-  removeCar(id: ID!): Car
+  test(file: Upload):Boolean
+  removeCar(id: ID!): Boolean
 }
 
 type Car {

@@ -4,9 +4,10 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { FileUpload } from 'src/modules/scalars/types/file.type';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { Upload } from '@aws-sdk/lib-storage';
 
 @Injectable()
 export class S3Service {
@@ -52,10 +53,8 @@ export class S3Service {
       if (filetypes.test(mimetype.toString())) {
         const name =
           `${direction}` + Date.now() + '-' + filename.replace(/ /g, '_');
-        await this.uploadFileS3(name, fileBuffer);
-        const url = await this.getUrl(name);
-
-        return { url, key: name };
+        const { Key, url } = await this.uploadFileS3(name, fileBuffer);
+        return { url, key: Key };
       } else {
         return null;
       }
@@ -65,14 +64,29 @@ export class S3Service {
   }
 
   async uploadFileS3(key: string, file: Buffer) {
-    const command = new PutObjectCommand({
-      Bucket: this.bucketName,
-      Key: key,
-      Body: file,
-    });
-    const response = await this.s3.send(command);
+    try {
+      const parallelUploads3 = new Upload({
+        client: this.s3,
+        params: { Bucket: this.bucketName, Key: key, Body: file },
+        leavePartsOnError: false,
+      });
+      // parallelUploads3.on('httpUploadProgress', () => {});
 
-    return response;
+      const { Key, Location: url } = await parallelUploads3.done();
+
+      // const command = new PutObjectCommand({
+      //   Bucket: this.bucketName,
+      //   Key: key,
+      //   Body: file,
+      // });
+      // const response = await this.s3.send(command);
+
+      return { Key, url };
+    } catch (err) {
+      throw new InternalServerErrorException(
+        `error when uploading images to the server`,
+      );
+    }
   }
 
   async getUrl(key: string): Promise<string> {

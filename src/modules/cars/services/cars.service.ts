@@ -41,7 +41,7 @@ export class CarsService {
   }
 
   async findOne(id: string) {
-    const carFound = await this.carModel.findById('658ace2886425d12378a7cdf');
+    const carFound = await this.carModel.findById(id);
 
     if (!carFound) {
       throw new BadRequestException(`car with id ${id} not found`);
@@ -54,9 +54,11 @@ export class CarsService {
   }
 
   async remove(id: string) {
-    console.log(id);
+    const cardFound = await this.carModel.findById(id);
+    await this.s3Service.deleteFile(cardFound.imageAws);
 
-    await this.s3Service.deleteFile(id);
-    return `This action removes a #${id} car`;
+    const result = await cardFound.deleteOne();
+
+    return result ? true : false;
   }
 }
