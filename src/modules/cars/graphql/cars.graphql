@@ -4,9 +4,8 @@ type Query {
 }
 
 type Mutation {
-  createCar(createCarInput: CreateCarInput!,file: Upload): Car!
-  updateCar(updateCarInput: UpdateCarInput!): Car!
-  test(file: Upload):Boolean
+  createCar(createCarInput: CreateCarInput!, file: Upload): Car!
+  updateCar(id: ID!, updateCarInput: UpdateCarInput!, file: Upload): Car!
   removeCar(id: ID!): Boolean
 }
 
@@ -50,7 +49,6 @@ input CreateCarInput {
 
 input UpdateCarInput {
   name: String
-  image: String
   countPerson: Int
   typeChange: String
   minTankQuantity: Float

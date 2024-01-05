@@ -32,8 +32,18 @@ export class CarsResolver {
   }
 
   @Mutation('updateCar')
-  update(@Args('updateCarInput') updateCarInput: UpdateCarInput) {
-    return this.carsService.update(updateCarInput.id, updateCarInput);
+  async update(
+    @Args('id') id: string,
+    @Args('updateCarInput') updateCarInput: UpdateCarInput,
+    @Args({ name: 'file', type: () => GraphQLUpload })
+    fileUpload: GraphQLUpload,
+  ) {
+    if (!fileUpload) {
+      return this.carsService.update(id, updateCarInput, null);
+    }
+    const { file } = await fileUpload;
+
+    return this.carsService.update(id, updateCarInput, file);
   }
 
   @Mutation('removeCar')

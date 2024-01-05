@@ -20,7 +20,6 @@ export class CarsService {
   ) {
     const newPhoto: FileUpload | null = await file;
 
-    console.log('car service 24', newPhoto);
     if (newPhoto && newPhoto != undefined) {
       const { url: image, key } = await this.s3Service.uploadFile(
         'cars/',
@@ -49,8 +48,31 @@ export class CarsService {
     return carFound;
   }
 
-  async update(id: number, updateCarInput: UpdateCarInput) {
-    return `This action updates a #${id} car`;
+  async update(
+    id: string,
+    updateCarInput: UpdateCarInput,
+    file: Promise<FileUpload> | Promise<null>,
+  ) {
+    const carFound = await this.findOne(id);
+
+    const newPhoto: FileUpload | null = await file;
+    if (newPhoto && newPhoto != undefined) {
+      if (carFound.imageAws) {
+        await this.s3Service.deleteFile(carFound.imageAws);
+      }
+      const { url: image, key } = await this.s3Service.uploadFile(
+        'cars/',
+        newPhoto,
+      );
+      updateCarInput.image = image ?? null;
+      updateCarInput.imageAws = key ?? null;
+    }
+    await carFound.updateOne({ ...updateCarInput });
+
+    return {
+      ...carFound.toJSON(),
+      ...updateCarInput,
+    };
   }
 
   async remove(id: string) {

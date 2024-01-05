@@ -7,12 +7,13 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
- app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
   app.use(graphqlUploadExpress());
   app.use(express.json({ limit: '10mb' }));
-  app.use((req, res, next) => {
+  app.use((req, _res, next) => {
     req.headers['content-type'] = 'application/json';
     console.log(req.headers)
+    console.log(req.body)
     next();
   });
   app.enableCors();

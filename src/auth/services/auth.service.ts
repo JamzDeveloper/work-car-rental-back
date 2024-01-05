@@ -43,7 +43,7 @@ export class AuthService {
     };
   }
   async dataWithToken(user: User) {
-    // return await this.userService.dataUser(user);
+    return user;
   }
   async authLoginAdmin(email: string, password: string, platform: string) {
     const foundUser = await this.userModel.findOne({ email });
